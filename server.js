@@ -9,10 +9,7 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-// At the top of server.js, after requiring modules
-const cors = require('cors');
 
-// After app = express()
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, or direct browser nav)
