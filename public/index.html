@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iteneran - Travel Blog</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/exifreader@4.36.2/dist/exif-reader.min.js"></script>
+</head>
+<body>
+
+  <!-- Full-screen map -->
+  <div id="map"></div>
+
+  <!-- Floating add button (always visible, gates behind auth) -->
+  <button id="add-btn" title="Add new marker">+</button>
+
+  <!-- Logout button (hidden until authenticated) -->
+  <button id="logout-btn" class="auth-hidden" title="Logout">Logout</button>
+
+  <!-- Marker detail modal -->
+  <div id="detail-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <button class="modal-close" id="detail-close">&times;</button>
+      <div id="detail-images"></div>
+      <div class="modal-footer">
+        <button id="detail-delete" class="btn-danger auth-hidden">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload modal -->
+  <div id="upload-modal" class="modal-backdrop hidden">
+    <div class="modal modal-sm">
+      <button class="modal-close" id="upload-close">&times;</button>
+      <h2>Upload Images</h2>
+      <form id="upload-form">
+        <label for="input-images">Select photos with GPS data</label>
+        <input type="file" id="input-images" name="images" accept="image/*" multiple />
+        <p id="upload-status" class="form-status hidden"></p>
+        <button type="submit" class="btn-primary">Upload</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth modal -->
+  <div id="auth-modal" class="modal-backdrop hidden">
+    <div class="modal modal-sm">
+      <button class="modal-close" id="auth-close">&times;</button>
+      <h2>Authentication</h2>
+      <form id="auth-form">
+        <label for="auth-passphrase">Passphrase</label>
+        <input type="password" id="auth-passphrase" required placeholder="Enter passphrase" autocomplete="current-password" />
+        <p id="auth-error" class="form-error hidden"></p>
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
