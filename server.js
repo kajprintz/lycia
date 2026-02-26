@@ -5,7 +5,19 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
 
+// At the top of server.js, after requiring modules
+const cors = require('cors');
+
 const app = express();
+app.use(cors({
+  origin: [
+    'https://lycia.printzmadsen.net',
+    'https://guanox.github.io',
+    'http://localhost:3000' // for dev
+  ],
+  credentials: true
+}));
+
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
