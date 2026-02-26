@@ -159,7 +159,16 @@ app.post('/api/markers', authenticateToken, upload.array('images', 10), (req, re
       return res.status(400).json({ error: 'lat and lng must be valid numbers' });
     }
 
-    const images = (req.files || []).map(f => '/uploads/' + f.filename);
+    // Determine the base URL for images: absolute if BACKEND_URL is set, else relative
+    const imageBaseUrl = process.env.BACKEND_URL 
+      ? process.env.BACKEND_URL.replace(/\/$/, '') // Remove trailing slash if present
+      : '';
+
+    const images = (req.files || []).map(f => {
+      const relativePath = '/uploads/' + f.filename;
+      // If BACKEND_URL is set, prepend it to make absolute URL
+      return imageBaseUrl ? `${imageBaseUrl}${relativePath}` : relativePath;
+    });
 
     const markers = readData();
     const newMarker = {

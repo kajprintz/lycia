@@ -5,7 +5,6 @@ const API_BASE =
   // Use relative path when served from same domain (production)
   window.location.hostname.includes('printzmadsen.net') 
     ? 'https://lycia.onrender.com/api'
-
     : '/api'; 
     // Use Render backend URL in development
 
@@ -314,6 +313,27 @@ function showDetail(marker) {
   openModal(detailModal);
 }
 
+function showDetail(marker) {
+  activeMarkerId = marker.id;
+  detailImages.innerHTML = '';
+  
+  // Determine the base URL for images
+  const imageBase = window.location.hostname.includes('printzmadsen.net') 
+    ? 'https://lycia.onrender.com' 
+    : '';
+  
+  (marker.images || []).forEach((src) => {
+    const img = document.createElement('img');
+    // Prefix relative paths with backend URL when needed
+    img.src = src.startsWith('http') ? src : imageBase + src;
+    img.alt = marker.title || '';
+    img.loading = 'lazy'; // Optional: improve performance
+    detailImages.appendChild(img);
+  });
+
+  openModal(detailModal);
+}
+
 // ============================================================
 // Delete handler
 // ============================================================
@@ -373,7 +393,12 @@ uploadForm.addEventListener('submit', async (e) => {
 
       console.log('Creating marker:', formData);
 
-      await createMarker(formData);
+      const newMarker = await createMarker(formData);
+      
+      // 🎯 THIS IS THE LOG YOU WANT:
+      console.log('✅ Marker created on server:', newMarker);
+      console.log('🖼️ Image URL(s) returned:', newMarker.images);
+
       created++;
     }
 
