@@ -9,14 +9,44 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
+// At the top of server.js, after requiring modules
+const cors = require('cors');
+
+// After app = express()
 app.use(cors({
-  origin: [
-    'https://lycia.printzmadsen.net',
-    'https://guanox.github.io',
-    'http://localhost:3000' // for dev
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or direct browser nav)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'https://lycia.printzmadsen.net',
+      'https://kajprintz.github.io',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.warn('❌ CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
+
+// Optional: Add a debug route to test CORS
+app.get('/api/test-cors', (req, res) => {
+  res.json({ 
+    message: 'CORS is working!', 
+    origin: req.get('origin'),
+    headers: req.headers 
+  });
+});
 
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
