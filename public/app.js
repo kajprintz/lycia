@@ -1,4 +1,13 @@
+// ============================================================// ============================================================
+// API Configuration
 // ============================================================
+const API_BASE = 
+  // Use relative path when served from same domain (production)
+  window.location.hostname.includes('printzmadsen.net') 
+    ? '/api' 
+    // Use Render backend URL in development
+    : 'https://lycia.onrender.com/api';
+
 // Configuration — change these values to set the initial view
 // ============================================================
 const MAP_CONFIG = {
@@ -137,7 +146,7 @@ authForm.addEventListener('submit', async (e) => {
   authError.classList.add('hidden');
 
   try {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ passphrase: authPassphrase.value })
@@ -239,13 +248,13 @@ async function readExifGps(file) {
 // API helpers
 // ============================================================
 async function fetchMarkers() {
-  const res = await fetch('/api/markers');
+  const res = await fetch(`${API_BASE}/markers`);
   if (!res.ok) throw new Error('Failed to fetch markers');
   return res.json();
 }
 
 async function createMarker(formData) {
-  const res = await fetch('/api/markers', {
+  const res = await fetch(`${API_BASE}/markers`, {
     method: 'POST',
     headers: { 'Authorization': 'Bearer ' + authToken },
     body: formData
@@ -262,7 +271,7 @@ async function createMarker(formData) {
 }
 
 async function deleteMarker(id) {
-  const res = await fetch(`/api/markers/${encodeURIComponent(id)}`, {
+  const res = await fetch(`${API_BASE}/markers/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: { 'Authorization': 'Bearer ' + authToken }
   });
