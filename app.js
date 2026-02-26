@@ -8,12 +8,14 @@ const API_BASE =
     // Use Render backend URL in development
     : 'https://lycia.onrender.com/api';
 
-// Configuration — change these values to set the initial view
 // ============================================================
+// Detect if the device is a phone (based on screen width)
+const isPhone = window.innerWidth < 600;
+
 const MAP_CONFIG = {
-  lat: 36.55,
-  lng: 30.0,
-  zoom: 9
+  lat: 36.55, 
+  lng: 30.0, 
+  zoom: isPhone ? 9 : 10 // Zoom out slightly for phones
 };
 
 // ============================================================
@@ -249,7 +251,7 @@ async function readExifGps(file) {
 // ============================================================
 async function fetchMarkers() {
   const res = await fetch(`${API_BASE}/markers`);
-  if (!res.ok) throw new Error('Failed to fetch markers');
+  if (!res.ok) throw new Error('Failed to fetch markers', res.status);
   return res.json();
 }
 
