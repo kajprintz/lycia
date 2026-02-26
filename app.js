@@ -4,9 +4,10 @@
 const API_BASE = 
   // Use relative path when served from same domain (production)
   window.location.hostname.includes('printzmadsen.net') 
-    ? '/api' 
+    ? 'https://lycia.onrender.com/api'
+
+    : '/api'; 
     // Use Render backend URL in development
-    : 'https://lycia.onrender.com/api';
 
 // ============================================================
 // Detect if the device is a phone (based on screen width)
@@ -17,6 +18,7 @@ const MAP_CONFIG = {
   lng: 30.0, 
   zoom: isPhone ? 9 : 10 // Zoom out slightly for phones
 };
+
 
 // ============================================================
 // Map initialisation
