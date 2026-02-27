@@ -8,14 +8,26 @@ const API_BASE =
     : '/api'; 
     // Use Render backend URL in development
 
-// ============================================================
-// Detect if the device is a phone (based on screen width)
-const isPhone = window.innerWidth < 600;
+
+function getDeviceType() {
+  const userAgent = navigator.userAgent;
+if (/Mobi|Android/i.test(userAgent)) {
+    return "Mobile";
+  } else if (/Tablet|iPad/i.test(userAgent)) {
+    return "Tablet";
+  } else {
+    return "Desktop";
+  }
+}
+
+console.log(getDeviceType());
+
+const isPhone = getDeviceType() === "Mobile";
 
 const MAP_CONFIG = {
   lat: 36.55, 
-  lng: 30.0, 
-  zoom: isPhone ? 9 : 10 // Zoom out slightly for phones
+  lng: 29.75, 
+  zoom: isPhone ? 8 : 10
 };
 
 
